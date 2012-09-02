@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="inputID">Please enter your ID Number</string>
+    <string name="app_name">Whack-A-Mole</string>
+    <string name="inputHint">ID Number</string>
+    <string name="okText">OK</string>
+    <string name="cancelText">Cancel</string>
+    <string name="modeSelectText">Select game mode:</string>
+    <string name="playForPracticeBttnText">Play For Practice</string>
+    <string name="playAgainstOthersBttnText">Play Against Others</string>
+    <string name="scorePointsWithFriendsBttnText">Score Points With Friends</string>
+
+</resources>

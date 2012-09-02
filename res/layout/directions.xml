@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+     >
+
+    <TextView
+        android:id="@+id/directionsHeader"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/directionsHeaderText"
+        android:textSize="@dimen/headerTextSize" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/directionsHeader" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/directionsBody"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/directionsBodyText"
+                android:textSize="30dp" />
+
+            <Button
+                android:id="@+id/directionsOKBttn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/directionsBody"
+                android:gravity="center_vertical"
+                android:layout_centerHorizontal="true"
+                android:text="@string/okText"
+                android:onClick="onOkSelect" />
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

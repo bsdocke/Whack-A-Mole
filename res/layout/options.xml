@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <TextView
+        android:id="@+id/modeLabel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:text="@string/modeSelectText" 
+        android:layout_marginBottom="20dp"
+        />
+
+    <Button
+        android:id="@+id/playForPracticeBttn"
+        android:textSize="@dimen/optionButtonTextSize"
+        android:textColor="@color/customButtonTextColor"
+        android:background="@drawable/custom_option_button"
+        android:layout_width="@dimen/optionButtonWidth"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/modeLabel"
+        android:layout_centerHorizontal="true"
+        android:text="@string/playForPracticeBttnText"
+        android:layout_marginBottom="20dp"
+        android:onClick="onPracticeSelect" />
+
+    <Button
+        android:id="@+id/playAgainstOthersBttn"
+        android:textSize="@dimen/optionButtonTextSize"
+        android:textColor="@color/customButtonTextColor"
+        android:background="@drawable/custom_option_button"
+        android:layout_width="@dimen/optionButtonWidth"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/playForPracticeBttn"
+        android:layout_centerHorizontal="true"
+        android:text="@string/playAgainstOthersBttnText"
+        android:layout_marginBottom="20dp"
+        android:lines="2" />
+
+    <Button
+        android:id="@+id/scorePointsWithFriendsBttn"
+        android:textSize="@dimen/optionButtonTextSize"
+        android:textColor="@color/customButtonTextColor"
+        android:background="@drawable/custom_option_button"
+        android:layout_width="@dimen/optionButtonWidth"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/playAgainstOthersBttn"
+        android:layout_centerHorizontal="true"
+        android:text="@string/scorePointsWithFriendsBttnText"
+        android:layout_marginBottom="20dp"
+        android:lines="2" />
+    
+    <Button
+        android:id="@+id/optionCancelBttn"
+        android:textSize="@dimen/optionButtonTextSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/scorePointsWithFriendsBttn"
+        android:layout_centerHorizontal="true"
+        android:text="@string/cancelText"
+        android:textColor="#444444" />
+
+</RelativeLayout>

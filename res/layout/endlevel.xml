@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+    
+    <TextView 
+        android:id="@+id/completionText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:color="#FF0000"
+        android:gravity="center_horizontal"
+        android:text="And now the level is finished. You are 400 percent more fit" />
+    
+
+</RelativeLayout>

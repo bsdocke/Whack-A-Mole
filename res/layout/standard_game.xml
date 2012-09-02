@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:id="@+id/gameWrapper"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#00FF00">
+
+    
+    
+    <TextView
+        android:id="@+id/scoreLabel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Score: " />
+
+    <TableLayout
+        android:id="@+id/board"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" 
+        android:layout_below="@id/scoreLabel">
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="30dp" >
+
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            
+        </TableRow>
+        
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="30dp"
+            android:layout_marginRight="8dp" >
+
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            
+        </TableRow>
+        
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="30dp"
+            android:layout_marginRight="8dp" >
+
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill" 
+                android:layout_marginRight="8dp"/>
+            
+        </TableRow>
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="30dp"
+            android:layout_marginRight="8dp" >
+
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            
+        </TableRow>
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="30dp" >
+
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            
+        </TableRow>
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="30dp" >
+
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            
+        </TableRow>
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="30dp" >
+
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill26"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill27"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            <view
+                class="com.components.Node"
+                android:id="@+id/molehill28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/molehill"
+                android:layout_marginRight="8dp" />
+            
+        </TableRow>
+    </TableLayout>
+    
+   
+
+</RelativeLayout>

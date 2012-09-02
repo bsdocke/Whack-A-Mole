@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/levelTable"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+    
+    <TextView
+        android:id="@+id/levelHeaderText"
+        android:text="@string/levelSelectText"
+        android:textSize="@dimen/headerTextSize"
+        android:layout_gravity="center_horizontal" />
+
+    <TableRow
+        android:id="@+id/row1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip" >
+
+        <Button
+            android:id="@+id/level1Bttn"
+            android:layout_width="@dimen/levelButtonWidth"
+            android:background="@drawable/custom_option_button"
+            android:text="1"
+            android:textColor="@color/customButtonTextColor"
+            android:textSize="@dimen/levelButtonTextSize"
+            android:onClick="onLevelSelect" />
+
+        <Button
+            android:id="@+id/level2Bttn"
+            android:layout_width="@dimen/levelButtonWidth"
+            android:background="@drawable/custom_option_button"
+            android:text="2"
+            android:textColor="@color/customButtonTextColor"
+            android:textSize="@dimen/levelButtonTextSize"
+            android:onClick="onLevelSelect" />
+
+        <Button
+            android:id="@+id/level3Bttn"
+            android:layout_width="@dimen/levelButtonWidth"
+            android:background="@drawable/custom_option_button"
+            android:text="3"
+            android:textColor="@color/customButtonTextColor"
+            android:textSize="@dimen/levelButtonTextSize"
+            android:onClick="onLevelSelect" />
+
+        <Button
+            android:id="@+id/level4Bttn"
+            android:layout_width="@dimen/levelButtonWidth"
+            android:background="@drawable/custom_option_button"
+            android:text="4"
+            android:textColor="@color/customButtonTextColor"
+            android:textSize="@dimen/levelButtonTextSize"
+            android:onClick="onLevelSelect" />
+
+        <Button
+            android:id="@+id/level5Bttn"
+            android:layout_width="@dimen/levelButtonWidth"
+            android:background="@drawable/custom_option_button"
+            android:text="5"
+            android:textColor="@color/customButtonTextColor"
+            android:textSize="@dimen/levelButtonTextSize"
+            android:onClick="onLevelSelect" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/row2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip" >
+
+        <Button
+            android:id="@+id/level6Bttn"
+            android:layout_width="@dimen/levelButtonWidth"
+            android:background="@drawable/custom_option_button"
+            android:text="6"
+            android:textColor="@color/customButtonTextColor"
+            android:textSize="@dimen/levelButtonTextSize" 
+            android:onClick="onLevelSelect"/>
+
+        <Button
+            android:id="@+id/level7Bttn"
+            android:layout_width="@dimen/levelButtonWidth"
+            android:background="@drawable/custom_option_button"
+            android:text="7"
+            android:textColor="@color/customButtonTextColor"
+            android:textSize="@dimen/levelButtonTextSize"
+            android:onClick="onLevelSelect" />
+
+        <Button
+            android:id="@+id/level8Bttn"
+            android:layout_width="@dimen/levelButtonWidth"
+            android:background="@drawable/custom_option_button"
+            android:text="8"
+            android:textColor="@color/customButtonTextColor"
+            android:textSize="@dimen/levelButtonTextSize"
+            android:onClick="onLevelSelect" />
+
+        <Button
+            android:id="@+id/level9Bttn"
+            android:layout_width="@dimen/levelButtonWidth"
+            android:background="@drawable/custom_option_button"
+            android:text="9"
+            android:textColor="@color/customButtonTextColor"
+            android:textSize="@dimen/levelButtonTextSize" 
+            android:onClick="onLevelSelect"/>
+
+        <Button
+            android:id="@+id/level10Bttn"
+            android:layout_width="@dimen/levelButtonWidth"
+            android:background="@drawable/custom_option_button"
+            android:text="10"
+            android:textColor="@color/customButtonTextColor"
+            android:textSize="@dimen/levelButtonTextSize"
+            android:onClick="onLevelSelect" />
+    </TableRow>
+
+</TableLayout>

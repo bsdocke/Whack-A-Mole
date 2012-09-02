@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="button_dark_green">#5c7923</color>
+    <color name="button_light_green">#a9d048</color>
+    <color name="button_border">#CCCCCC</color>
+    <color name="button_down_dark_orange">#FF9900</color>
+    <color name="button_down_light_orange">#FFCC00</color> 
+    <color name="customButtonTextColor">#ffffff</color>
+</resources>

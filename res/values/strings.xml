@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="inputID">Please enter your ID Number</string>
+    <string name="app_name">Whack-A-Mole</string>
+    <string name="inputHint">ID Number</string>
+    <string name="okText">OK</string>
+    <string name="cancelText">Cancel</string>
+    <string name="modeSelectText">Select game mode:</string>
+    <string name="playForPracticeBttnText">Play For Practice</string>
+    <string name="playAgainstOthersBttnText">Play Against Others</string>
+    <string name="scorePointsWithFriendsBttnText">Score Points With Friends</string>
+    <string name="levelSelectText">Select a Level:</string>
+    <string name="directionsHeaderText">Directions</string>
+    <string name="directionsBodyText">Moles will pop up in random places on the screen. Move in the direction of the mole and hit them on the head by making whacking motion with the phone. Be careful to only whack the moles! Each hole on the screen is one step in that direction. Be careful to not throw your phone!</string>
+
+</resources>

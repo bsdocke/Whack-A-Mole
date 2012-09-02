@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="inputLabelSize">40dip</dimen>
+    <dimen name="optionButtonTextSize">30dip</dimen>
+    <dimen name="optionButtonWidth">240dip</dimen>
+</resources>
