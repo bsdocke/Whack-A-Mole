@@ -13,6 +13,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -27,7 +31,8 @@ import com.components.GlobalState;
 
 import fitnessapps.acceltest.activity.IAccelRemoteService;
 
-public class GameActivity extends Activity {
+public class GameActivity extends Activity implements
+SensorEventListener{
 
 	private static final int MOLE_INTERVAL = 30000;
 	private static final int MIN_GPS_TIME_INTERVAL = 500;
@@ -51,6 +56,9 @@ public class GameActivity extends Activity {
 	private IAccelRemoteService remoteService;
 
 	private BluetoothAdapter adapter;
+	public boolean onTarget = false;
+	private SensorManager sensorManager;
+	private Sensor sensorAccelerometer;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -73,6 +81,12 @@ public class GameActivity extends Activity {
 		hillIndex = hillIndex % numHills;
 		GlobalState.currentHill = GlobalState.hills.get(hillIndex);
 
+		sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+		sensorAccelerometer = (Sensor)sensorManager
+				.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+		sensorManager.registerListener(this, sensorAccelerometer,
+				SensorManager.SENSOR_DELAY_GAME);
+		
 		initLeader();
 
 	}
@@ -236,6 +250,12 @@ public class GameActivity extends Activity {
 			Log.d(getClass().getSimpleName(), "onServiceDisconnected");
 		}
 	};
+	
+	private void accelerometerHandler(SensorEvent event) {
+		
+	}
+
+	
 
 	/***************** End Remote Service ******************************/
 	private class MyLocationListener implements LocationListener {
@@ -253,9 +273,13 @@ public class GameActivity extends Activity {
 							- GlobalState.currentHill.getLongitude()) < 0.00005) {
 				Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 				vib.vibrate(100);
-				if (score < requiredScore) {
-					score += 20;
-				}
+				onTarget  = true;
+				//if (score < requiredScore) {
+				//	score += 20;
+			//	}
+			}
+			else{
+				onTarget = false;
 			}
 
 			setLatitudeText();
@@ -289,6 +313,19 @@ public class GameActivity extends Activity {
 			GlobalState.currentHill = GlobalState.hills.get(hillIndex);
 		}
 
+	}
+
+	public void onAccuracyChanged(Sensor arg0, int arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void onSensorChanged(SensorEvent event) {
+		if(event.values[0] > 20 || event.values[1] > 20 || event.values[2] > 20){
+			if(score < requiredScore)
+				score += 20;
+		}
+		
 	}
 
 }
