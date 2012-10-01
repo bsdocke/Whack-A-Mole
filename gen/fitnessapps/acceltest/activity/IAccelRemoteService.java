@@ -1,6 +1,6 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Original file: /home/brandon/Desktop/repos/Whack-A-Mole/src/fitnessapps/acceltest/activity/IAccelRemoteService.aidl
+ * Original file: C:\\Documents and Settings\\Administrator\\My Documents\\repos\\Whack-A-Mole\\src\\fitnessapps\\acceltest\\activity\\IAccelRemoteService.aidl
  */
 package fitnessapps.acceltest.activity;
 public interface IAccelRemoteService extends android.os.IInterface

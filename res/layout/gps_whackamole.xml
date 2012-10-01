@@ -10,7 +10,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="22dp"
-        android:text="Target GPS position" />
+        android:text=" scored" />
 
     <TextView
         android:id="@+id/accuracy"
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/textView1"
-        android:text="Target Accuracy:" />
+        android:text="Level 1" />
 
     <TextView
         android:id="@+id/latitude"

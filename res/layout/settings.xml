@@ -12,16 +12,16 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="26dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginTop="13dp"
         android:text="Number of Players" />
     
-    <EditText 
-        android:inputType="phone"
-        android:id="@+id/numPlayersField"
-        android:layout_width="0dp"
+    <EditText
+        android:id="@+id/editview"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/numPlayersLabel" />
+        android:layout_below="@id/numPlayersLabel"
+        android:hint="Number of Players"
+        android:inputType="phone" />
     
     <TextView
         android:id="@+id/addMoleHillsLabel"
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="26dp"
-        android:layout_below="@id/numPlayersField"
+        android:layout_below="@id/editview"
         android:text="Add MoleHill" />
     
     <TextView
@@ -47,7 +47,8 @@
         android:text="Add Hill"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/currentCoord"/>
+        android:layout_below="@id/currentCoord"
+        android:onClick="onAddPressed"/>
     
     <Button 
         android:id="@+id/clearBttn"
@@ -55,10 +56,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/currentCoord"
-        android:layout_toRightOf="@id/addBttn"/>
+        android:layout_toRightOf="@id/addBttn"
+        android:onClick="onClearPressed"/>/>
     
     <ListView
-        android:id="@+id/holeList"
+        android:id="@+id/coordList"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/clearBttn"

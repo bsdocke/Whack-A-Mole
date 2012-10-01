@@ -1,8 +1,6 @@
 package com.activities;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.Random;
+import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -10,8 +8,6 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -27,7 +23,7 @@ import android.os.Vibrator;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.components.PlayerSettings;
+import com.components.GlobalState;
 
 import fitnessapps.acceltest.activity.IAccelRemoteService;
 
@@ -38,23 +34,18 @@ public class GameActivity extends Activity {
 	private static final int MIN_GPS_DISTANCE_INTERVAL = 0;
 
 	private LocationManager manager;
-	private Activity parentActivity;
+	private GameActivity parentActivity;
 
 	private int level = 1;
-	private int score;
-	private String lastLocString = "";
+	private int score = 0;
+	private int requiredScore = 100;
+	private int hillIndex = 0;
+	private int hillAdvancementAmount = 1;
 
 	private Timer moleTimer;
 	private MoleSwitchTask moleTask;
 	private Location location;
 	private MyLocationListener locListener;
-
-	private Timer twoMinuteExtensionTimer;
-	private Timer oneMinuteExtensionTimer;
-	private Timer endTimer;
-	private EndTask endTask;
-	private TwoMinuteExtensionTask twoMinuteExtensionTask;
-	private OneMinuteExtensionTask oneMinuteExtensionTask;
 
 	private RemoteServiceConnection conn;
 	private IAccelRemoteService remoteService;
@@ -68,51 +59,35 @@ public class GameActivity extends Activity {
 
 	public void onStart() {
 		super.onStart();
-		level = getIntent().getIntExtra("LEVEL", Short.MIN_VALUE);
-
+		int numHills = GlobalState.hills.size();
 		parentActivity = this;
-		adapter = BluetoothAdapter.getDefaultAdapter();
-		if (!adapter.isEnabled()) {
-			registerListener(BluetoothAdapter.ACTION_STATE_CHANGED);
-		} else {
-			Process p;
-			try {
-				p = Runtime.getRuntime().exec("su");
-				if (isMoleLeader()) {
-					initLeader();
-					startLevelTimeChain();
-				} else {
-					initNormal();
-					registerListener(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-					registerListener(BluetoothDevice.ACTION_FOUND);
+		Calendar c = Calendar.getInstance();
+		hillAdvancementAmount = c.get(Calendar.DAY_OF_MONTH);
 
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		if (hillAdvancementAmount >= numHills
+				&& hillAdvancementAmount % numHills == 0) {
+			hillAdvancementAmount++;
 		}
+
+		hillIndex += getHillIndex();
+		hillIndex = hillIndex % numHills;
+		GlobalState.currentHill = GlobalState.hills.get(hillIndex);
+
+		initLeader();
+
 	}
 
-	private boolean isMoleLeader() {
-		return PlayerSettings.isMoleLeader;
+	public int getHillIndex() {
+		return this.hillAdvancementAmount;
 	}
 
 	private void initLeader() {
+
 		initLocationManager();
 		initMoleTimers();
-		initLevelTiming();
 		if (isAccelServiceRunning()) {
 			bindService();
 		}
-	}
-
-	private void initNormal() {
-		initLocationManager();
-		initLevelTiming();
-		adapter.startDiscovery();
-
-		endTimer.schedule(endTask, 300000);
-		bindService();
 	}
 
 	private void initLocationManager() {
@@ -128,27 +103,6 @@ public class GameActivity extends Activity {
 		moleTimer.scheduleAtFixedRate(moleTask, MOLE_INTERVAL, MOLE_INTERVAL);
 	}
 
-	private void initLevelTiming() {
-		initLevelTimers();
-		initLevelTasks();
-	}
-
-	private void initLevelTimers() {
-		twoMinuteExtensionTimer = new Timer();
-		oneMinuteExtensionTimer = new Timer();
-		endTimer = new Timer();
-	}
-
-	private void initLevelTasks() {
-		twoMinuteExtensionTask = new TwoMinuteExtensionTask();
-		oneMinuteExtensionTask = new OneMinuteExtensionTask();
-		endTask = new EndTask();
-	}
-
-	private void startLevelTimeChain() {
-		twoMinuteExtensionTimer.schedule(twoMinuteExtensionTask, 122000);
-	}
-
 	public void onBackPressed() {
 		super.onBackPressed();
 		stopGPS();
@@ -156,7 +110,6 @@ public class GameActivity extends Activity {
 	}
 
 	public void onStop() {
-		// unregisterReceiver(discoverReceiver);
 		stopGPS();
 		cancelTimers();
 		releaseService();
@@ -172,19 +125,6 @@ public class GameActivity extends Activity {
 		moleTimer.cancel();
 		moleTask.cancel();
 
-		endTimer.cancel();
-		twoMinuteExtensionTimer.cancel();
-		oneMinuteExtensionTimer.cancel();
-
-		twoMinuteExtensionTask.cancel();
-		oneMinuteExtensionTask.cancel();
-		endTask.cancel();
-	}
-
-	private void setViewTexts() {
-		setLatitudeText();
-		setLongitudeText();
-		setAccuracyText();
 	}
 
 	private TextView getLatitudeView() {
@@ -200,18 +140,19 @@ public class GameActivity extends Activity {
 	}
 
 	private void setLatitudeText() {
-		Log.e("SET LATITUDE", "Latitude view set to " + location.getLatitude());
-		TextView latView = getLatitudeView();
-		latView.setText("Current Latitude: "
-				+ Double.toString(location.getLatitude()));
+		if (GlobalState.currentHill != null) {
+			TextView latView = getLatitudeView();
+			latView.setText("Current Latitude: "
+					+ Double.toString(GlobalState.currentHill.getLatitude()));
+		}
 	}
 
 	private void setLongitudeText() {
-		Log.e("SET LONGITUDE",
-				"Longitude view set to " + location.getLongitude());
-		TextView longView = getLongitudeView();
-		longView.setText("Current Longitude: "
-				+ Double.toString(location.getLongitude()));
+		if (GlobalState.currentHill != null) {
+			TextView longView = getLongitudeView();
+			longView.setText("Current Longitude: "
+					+ Double.toString(GlobalState.currentHill.getLongitude()));
+		}
 	}
 
 	private void setAccuracyText() {
@@ -222,14 +163,13 @@ public class GameActivity extends Activity {
 	}
 
 	private void setCurrLatitudeText(String val) {
-		Log.e("SET LATITUDE", "Latitude view set to " + location.getLatitude());
+		
 		TextView latView = (TextView) findViewById(R.id.currLat);
 		latView.setText("Current Latitude: " + val);
 	}
 
 	private void setCurrLongitudeText(String val) {
-		Log.e("SET LONGITUDE",
-				"Longitude view set to " + location.getLongitude());
+
 		TextView longView = (TextView) findViewById(R.id.currLong);
 		longView.setText("Current Longitude: " + val);
 	}
@@ -242,13 +182,6 @@ public class GameActivity extends Activity {
 
 	private boolean isInitialLocationSet() {
 		return location != null;
-	}
-
-	private void updateBluetoothName() {
-		if (adapter.isEnabled() && isMoleLeader()) {
-			adapter.setName("MOLELEADER:" + location.getLatitude() + "_"
-					+ location.getLongitude());
-		}
 	}
 
 	protected void registerListener(String action) {
@@ -308,35 +241,27 @@ public class GameActivity extends Activity {
 	private class MyLocationListener implements LocationListener {
 
 		public void onLocationChanged(Location loc) {
-			// Log.e("LOCATION FOUND", "At least the thing is updating...?");
-			if (!isInitialLocationSet()) {
-				// Log.e("LOCATION INITIALIZED", "Set new location for all");
-				if (isMoleLeader()) {
-					Random rand = new Random();
-					int latChange = -20 + (int) (Math.random() * ((40) + 1));
-					// location = loc;
-					location = new Location("computedLocation");
-					location.setLatitude(loc.getLatitude()
-							+ (latChange / 100000));
-					location.setLongitude(loc.getLongitude()
-							+ (latChange / 100000));
-					location.setAccuracy(loc.getAccuracy());
-					setViewTexts();
-					updateBluetoothName();
-				}
-			} else {
-				setCurrLatitudeText(Double.toString(loc.getLatitude()));
-				setCurrLongitudeText(Double.toString(loc.getLongitude()));
-				setCurrAccuracyText(Float.toString(loc.getAccuracy()));
-				if (Math.abs(loc.getLatitude() - location.getLatitude()) < 0.00005
-						&& Math.abs(loc.getLongitude()
-								- location.getLongitude()) < 0.00005) {
-					Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-					vib.vibrate(100);
+
+			if (score >= requiredScore) {
+				TextView indicator = (TextView) findViewById(R.id.textView1);
+				indicator.setText("Help your friends finish the level!");
+			}
+
+			if (Math.abs(loc.getLatitude()
+					- GlobalState.currentHill.getLatitude()) < 0.00005
+					&& Math.abs(loc.getLongitude()
+							- GlobalState.currentHill.getLongitude()) < 0.00005) {
+				Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+				vib.vibrate(100);
+				if (score < requiredScore) {
 					score += 20;
 				}
 			}
 
+			setLatitudeText();
+			setLongitudeText();
+			setCurrLatitudeText(Double.toString(loc.getLatitude()));
+			setCurrLongitudeText(Double.toString(loc.getLongitude()));
 		}
 
 		public void onProviderDisabled(String arg0) {
@@ -359,39 +284,11 @@ public class GameActivity extends Activity {
 
 		@Override
 		public void run() {
-			location = null;
+			hillIndex += getHillIndex();
+			hillIndex = hillIndex % GlobalState.hills.size();
+			GlobalState.currentHill = GlobalState.hills.get(hillIndex);
 		}
 
 	}
 
-	private class TwoMinuteExtensionTask extends TimerTask {
-		@Override
-		public void run() {
-			Log.e("TIME EXTENDED", "2 minutes");
-			oneMinuteExtensionTimer.schedule(oneMinuteExtensionTask, 122000);
-
-		}
-	}
-
-	private class OneMinuteExtensionTask extends TimerTask {
-		@Override
-		public void run() {
-
-			endTimer.schedule(endTask, 62000);
-
-		}
-	}
-
-	private class EndTask extends TimerTask {
-		@Override
-		public void run() {
-
-			Intent intent = new Intent(parentActivity, EndLevelActivity.class);
-			if (!isMoleLeader()) {
-				adapter.cancelDiscovery();
-			}
-			intent.putExtra("SCORE", score);
-			parentActivity.startActivity(intent);
-		}
-	}
 }

@@ -38,5 +38,9 @@ public class GPSData {
 	public void setAccuracy(float accuracy) {
 		this.accuracy = accuracy;
 	}
+	
+	public String toString(){
+		return longitude + "  :  " + latitude;
+	}
 
 }
