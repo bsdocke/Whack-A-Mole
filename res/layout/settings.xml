@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+    
+    <TextView
+        android:id="@+id/numPlayersLabel"
+        android:textSize="32sp"
+        android:textColor="#00cc00"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
+        android:layout_marginBottom="100dp"
+        android:text="Number of Players" />
+    
+    <EditText 
+        android:inputType="phone"
+        android:id="@+id/numPlayersField"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/numPlayersLabel" />
+    
+    <TextView
+        android:id="@+id/addMoleHillsLabel"
+        android:textSize="32sp"
+        android:textColor="#00cc00"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
+        android:layout_below="@id/numPlayersField"
+        android:text="Add MoleHill" />
+    
+    <TextView
+        android:id="@+id/currentCoord"
+        android:text="Getting position"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addMoleHillsLabel" />
+    
+    <Button 
+        android:id="@+id/addBttn"
+        android:text="Add Hill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/currentCoord"/>
+    
+    <Button 
+        android:id="@+id/clearBttn"
+        android:text="Clear Hills"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/currentCoord"
+        android:layout_toRightOf="@id/addBttn"/>
+    
+    <ListView
+        android:id="@+id/holeList"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/clearBttn"
+        android:keepScreenOn="true" />
+    
+
+</RelativeLayout>

@@ -6,14 +6,11 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.components.PlayerSettings;
-
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.IBluetooth;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -27,9 +24,11 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.os.Vibrator;
-import android.provider.Settings.Secure;
 import android.util.Log;
 import android.widget.TextView;
+
+import com.components.PlayerSettings;
+
 import fitnessapps.acceltest.activity.IAccelRemoteService;
 
 public class GameActivity extends Activity {
@@ -80,7 +79,6 @@ public class GameActivity extends Activity {
 			try {
 				p = Runtime.getRuntime().exec("su");
 				if (isMoleLeader()) {
-					ensureBluetoothDiscoverability(120);
 					initLeader();
 					startLevelTimeChain();
 				} else {
@@ -97,61 +95,6 @@ public class GameActivity extends Activity {
 
 	private boolean isMoleLeader() {
 		return PlayerSettings.isMoleLeader;
-	}
-
-	protected void ensureBluetoothDiscoverability(int duration) {
-
-		try {
-
-			IBluetooth mBtService = getIBluetooth();
-
-			Log.d("TESTE", "Ensuring bluetoot is discoverable");
-			if (mBtService.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
-				Log.e("TESTE", "Device was not in discoverable mode");
-				try {
-					mBtService.setDiscoverableTimeout(duration);
-					mBtService
-							.setScanMode(
-									BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE,
-									1000);
-				} catch (Exception e) {
-					Log.e("TESTE", "Error setting bt discoverable", e);
-				}
-				Log.i("TESTE", "Device must be discoverable");
-			} else {
-				Log.e("TESTE", "Device already discoverable");
-			}
-		} catch (Exception e) {
-			Log.e("TESTE", "Error ensuring BT discoverability", e);
-		}
-
-	}
-
-	private IBluetooth getIBluetooth() {
-
-		IBluetooth ibt = null;
-
-		try {
-
-			Class c2 = Class.forName("android.os.ServiceManager");
-
-			Method m2 = c2.getDeclaredMethod("getService", String.class);
-			IBinder b = (IBinder) m2.invoke(null, "bluetooth");
-
-			Class c3 = Class.forName("android.bluetooth.IBluetooth");
-
-			Class[] s2 = c3.getDeclaredClasses();
-
-			Class c = s2[0];
-			Method m = c.getDeclaredMethod("asInterface", IBinder.class);
-			m.setAccessible(true);
-			ibt = (IBluetooth) m.invoke(null, b);
-
-		} catch (Exception e) {
-			Log.e("BluetoothError", "Erroraco!!! " + e.getMessage());
-		}
-
-		return ibt;
 	}
 
 	private void initLeader() {
@@ -310,40 +253,6 @@ public class GameActivity extends Activity {
 
 	protected void registerListener(String action) {
 		IntentFilter filter = new IntentFilter(action);
-		registerReceiver(discoverReceiver, filter);
-	}
-
-	protected BroadcastReceiver initReceiver() {
-		return new BroadcastReceiver() {
-			public void onReceive(Context context, Intent intent) {
-				String action = intent.getAction();
-				if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
-					if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
-							Short.MIN_VALUE) == BluetoothAdapter.STATE_ON) {
-						Process p;
-						try {
-							p = Runtime.getRuntime().exec("su");
-							ensureBluetoothDiscoverability(120);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-
-					}
-				} else if (action.equals(BluetoothDevice.ACTION_FOUND)
-						&& !intent.getStringExtra(BluetoothDevice.EXTRA_NAME)
-								.equals(lastLocString)) {
-					lastLocString = intent
-							.getStringExtra(BluetoothDevice.EXTRA_NAME);
-					String rawLocationString = lastLocString.split(":")[1];
-					String[] coords = rawLocationString.split("_");
-
-					location = new Location("updatedFromNonLeader");
-					location.setLatitude(Double.parseDouble(coords[0]));
-					location.setLongitude(Double.parseDouble(coords[1]));
-					setViewTexts();
-				}
-			}
-		};
 	}
 
 	/******************** Remote Service ***************************/
@@ -396,9 +305,6 @@ public class GameActivity extends Activity {
 	};
 
 	/***************** End Remote Service ******************************/
-
-	protected final BroadcastReceiver discoverReceiver = initReceiver();
-
 	private class MyLocationListener implements LocationListener {
 
 		public void onLocationChanged(Location loc) {
@@ -461,31 +367,18 @@ public class GameActivity extends Activity {
 	private class TwoMinuteExtensionTask extends TimerTask {
 		@Override
 		public void run() {
-			Process p;
-			try {
-				Log.e("TIME EXTENDED", "2 minutes");
-				p = Runtime.getRuntime().exec("su");
-				ensureBluetoothDiscoverability(120);
-				oneMinuteExtensionTimer
-						.schedule(oneMinuteExtensionTask, 122000);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			Log.e("TIME EXTENDED", "2 minutes");
+			oneMinuteExtensionTimer.schedule(oneMinuteExtensionTask, 122000);
+
 		}
 	}
 
 	private class OneMinuteExtensionTask extends TimerTask {
 		@Override
 		public void run() {
-			Process p;
-			try {
-				Log.e("TIME EXTENDED", "1 minute");
-				p = Runtime.getRuntime().exec("su");
-				ensureBluetoothDiscoverability(60);
-				endTimer.schedule(endTask, 62000);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+
+			endTimer.schedule(endTask, 62000);
+
 		}
 	}
 
