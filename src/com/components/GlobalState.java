@@ -10,4 +10,5 @@ public class GlobalState {
 	public static int numPlayers;
 	public static String overrideCode;
 	public static ArrayList<Integer[]> hillOrders;
+	public static int playerNum;
 }

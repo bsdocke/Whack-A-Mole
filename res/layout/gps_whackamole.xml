@@ -1,31 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/moleLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/playerNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="22dp"
-        android:text=" scored" />
-
+        android:layout_alignParentLeft="true"
+        android:text="Player" />
+    
     <TextView
-        android:id="@+id/accuracy"
+        android:id="@+id/scoreField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/textView1"
-        android:text="Level 1" />
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/playerNumber"
+        android:layout_marginLeft="50dp"
+        android:text=" scored" />
+    
+    <TextView
+        android:id="@+id/levelField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/scoreField"/>
 
     <TextView
         android:id="@+id/latitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/accuracy"
+        android:layout_below="@id/levelField"
         android:text="Target Latitude:" />
 
     <TextView
@@ -53,11 +60,26 @@
         android:text="Current Latitude:" />
     
     <TextView
-        android:id="@+id/currAcc"
+        android:id="@+id/myCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/currLat"/>
+    
+    <EditText
+        android:id="@+id/codeField"
+        android:inputType="text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/myCode" />
+
+    <Button
+        android:id="@+id/submitBttn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/currLat"
-        android:text="Current Accuracy:" />
+        android:layout_below="@+id/codeField"
+        android:onClick="codeSubmit"
+        android:text="Enter" />
 
 </RelativeLayout>

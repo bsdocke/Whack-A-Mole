@@ -23,6 +23,14 @@
         android:hint="Number of Players"
         android:inputType="phone" />
     
+    <EditText
+        android:id="@+id/editview2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editview"
+        android:hint="Player Number (don't exceed num of players)"
+        android:inputType="phone" />
+    
     <TextView
         android:id="@+id/addMoleHillsLabel"
         android:textSize="32sp"
@@ -32,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="26dp"
-        android:layout_below="@id/editview"
+        android:layout_below="@id/editview2"
         android:text="Add MoleHill" />
     
     <TextView

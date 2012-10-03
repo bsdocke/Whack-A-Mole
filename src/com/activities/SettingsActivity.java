@@ -30,43 +30,51 @@ public class SettingsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.settings);
 		GlobalState.hills = new ArrayList<GPSData>();
-		
-		adapter= new ArrayAdapter<GPSData>(this,
-	            R.layout.device_entry,
-	            GlobalState.hills);
+
+		adapter = new ArrayAdapter<GPSData>(this, R.layout.device_entry,
+				GlobalState.hills);
 		ListView list = (ListView) findViewById(R.id.coordList);
 		list.setAdapter(adapter);
-		
+
 	}
-	
-	public void onStart(){
+
+	public void onStart() {
 		super.onStart();
 		locListener = new MyLocationListener();
 		manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		manager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
 				MIN_GPS_TIME_INTERVAL, MIN_GPS_DISTANCE_INTERVAL, locListener);
 	}
-	
-	public void onBackPressed(){
+
+	public void onBackPressed() {
 		super.onBackPressed();
-		EditText num = (EditText)findViewById(R.id.editview);
-		GlobalState.numPlayers = Integer.parseInt(num.getText().toString());
+		EditText num = (EditText) findViewById(R.id.editview);
+		EditText playerNum = (EditText) findViewById(R.id.editview2);
+		
+		if (num.getText().length() > 0) {
+			GlobalState.numPlayers = Integer.parseInt(num.getText().toString());
+		}
+		if(playerNum.getText().length() > 0){
+			GlobalState.playerNum = Integer.parseInt(playerNum.getText().toString());
+		}
 		stopGPS();
 	}
-	
+
 	private void stopGPS() {
 		manager.removeUpdates(locListener);
 	}
-	
-	public void onAddPressed(View view){
-		GPSData data = new GPSData();
-		data.setLatitude(location.getLatitude());
-		data.setLongitude(location.getLongitude());
-		GlobalState.hills.add(data);
-		adapter.notifyDataSetChanged();
+
+	public void onAddPressed(View view) {
+		if (location != null) {
+			GPSData data = new GPSData();
+			data.setLatitude(location.getLatitude());
+			data.setLongitude(location.getLongitude());
+			GlobalState.hills.add(data);
+			adapter.notifyDataSetChanged();
+		}
 	}
-	
-	public void onClearPressed(View view){
+
+	public void onClearPressed(View view) {
 		GlobalState.hills = new ArrayList<GPSData>();
 		adapter.clear();
 		adapter.notifyDataSetChanged();
@@ -76,9 +84,8 @@ public class SettingsActivity extends Activity {
 	private class MyLocationListener implements LocationListener {
 
 		public void onLocationChanged(Location loc) {
-
-				location = loc;
 			
+			location = loc;
 
 			String values = Double.toString(loc.getLatitude()) + "   "
 					+ Double.toString(loc.getLongitude());
@@ -86,19 +93,16 @@ public class SettingsActivity extends Activity {
 			coord.setText(values);
 		}
 
-	
 		public void onProviderDisabled(String arg0) {
 			// TODO Auto-generated method stub
 
 		}
 
-		
 		public void onProviderEnabled(String arg0) {
 			// TODO Auto-generated method stub
 
 		}
 
-		
 		public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
 			// TODO Auto-generated method stub
 
