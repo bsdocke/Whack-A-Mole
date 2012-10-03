@@ -39,7 +39,6 @@ SensorEventListener{
 	private static final int MIN_GPS_DISTANCE_INTERVAL = 0;
 
 	private LocationManager manager;
-	private GameActivity parentActivity;
 
 	private int level = 1;
 	private int score = 0;
@@ -55,7 +54,6 @@ SensorEventListener{
 	private RemoteServiceConnection conn;
 	private IAccelRemoteService remoteService;
 
-	private BluetoothAdapter adapter;
 	public boolean onTarget = false;
 	private SensorManager sensorManager;
 	private Sensor sensorAccelerometer;
@@ -68,7 +66,6 @@ SensorEventListener{
 	public void onStart() {
 		super.onStart();
 		int numHills = GlobalState.hills.size();
-		parentActivity = this;
 		Calendar c = Calendar.getInstance();
 		hillAdvancementAmount = c.get(Calendar.DAY_OF_MONTH);
 
@@ -169,13 +166,6 @@ SensorEventListener{
 		}
 	}
 
-	private void setAccuracyText() {
-		TextView accView = getAccuracyView();
-		Log.e("SET ACCURACY", "Accuracy view set to " + location.getAccuracy());
-		accView.setText("Current Accuracy: "
-				+ Float.toString(location.getAccuracy()));
-	}
-
 	private void setCurrLatitudeText(String val) {
 		
 		TextView latView = (TextView) findViewById(R.id.currLat);
@@ -186,20 +176,6 @@ SensorEventListener{
 
 		TextView longView = (TextView) findViewById(R.id.currLong);
 		longView.setText("Current Longitude: " + val);
-	}
-
-	private void setCurrAccuracyText(String val) {
-		TextView accView = (TextView) findViewById(R.id.currAcc);
-		Log.e("SET ACCURACY", "Accuracy view set to " + location.getAccuracy());
-		accView.setText("Current Accuracy: " + val);
-	}
-
-	private boolean isInitialLocationSet() {
-		return location != null;
-	}
-
-	protected void registerListener(String action) {
-		IntentFilter filter = new IntentFilter(action);
 	}
 
 	/******************** Remote Service ***************************/
@@ -250,12 +226,6 @@ SensorEventListener{
 			Log.d(getClass().getSimpleName(), "onServiceDisconnected");
 		}
 	};
-	
-	private void accelerometerHandler(SensorEvent event) {
-		
-	}
-
-	
 
 	/***************** End Remote Service ******************************/
 	private class MyLocationListener implements LocationListener {
@@ -274,9 +244,6 @@ SensorEventListener{
 				Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 				vib.vibrate(100);
 				onTarget  = true;
-				//if (score < requiredScore) {
-				//	score += 20;
-			//	}
 			}
 			else{
 				onTarget = false;
@@ -321,7 +288,7 @@ SensorEventListener{
 	}
 
 	public void onSensorChanged(SensorEvent event) {
-		if(event.values[0] > 20 || event.values[1] > 20 || event.values[2] > 20){
+		if(event.values[0] > 50 || event.values[1] > 50 || event.values[2] > 50){
 			if(score < requiredScore)
 				score += 20;
 		}

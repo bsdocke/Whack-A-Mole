@@ -2,8 +2,6 @@ package com.components;
 
 import java.util.ArrayList;
 
-import android.location.Location;
-
 public class GlobalState {
 
 	public static  ArrayList<GPSData> hills;
