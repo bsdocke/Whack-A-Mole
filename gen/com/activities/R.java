@@ -39,28 +39,24 @@ public final class R {
         public static final int right_arrow=0x7f020009;
     }
     public static final class id {
-        public static final int addBttn=0x7f090010;
-        public static final int addMoleHillsLabel=0x7f09000e;
-        public static final int clearBttn=0x7f090011;
-        public static final int codeField=0x7f090009;
-        public static final int coordList=0x7f090012;
-        public static final int currLat=0x7f090007;
-        public static final int currLong=0x7f090006;
-        public static final int currentCoord=0x7f09000f;
-        public static final int editview=0x7f09000c;
-        public static final int editview2=0x7f09000d;
-        public static final int latitude=0x7f090004;
+        public static final int addBttn=0x7f09000c;
+        public static final int addMoleHillsLabel=0x7f09000a;
+        public static final int clearBttn=0x7f09000d;
+        public static final int codeField=0x7f090005;
+        public static final int coordList=0x7f09000e;
+        public static final int currentCoord=0x7f09000b;
+        public static final int editview=0x7f090008;
+        public static final int editview2=0x7f090009;
         public static final int levelField=0x7f090003;
-        public static final int longitude=0x7f090005;
         public static final int moleLayout=0x7f090000;
-        public static final int myCode=0x7f090008;
-        public static final int numPlayersLabel=0x7f09000b;
+        public static final int myCode=0x7f090004;
+        public static final int numPlayersLabel=0x7f090007;
         public static final int playerNumber=0x7f090001;
         public static final int scoreField=0x7f090002;
-        public static final int startBtn=0x7f090014;
-        public static final int startGameOption=0x7f090015;
-        public static final int submitBttn=0x7f09000a;
-        public static final int title=0x7f090013;
+        public static final int startBtn=0x7f090010;
+        public static final int startGameOption=0x7f090011;
+        public static final int submitBttn=0x7f090006;
+        public static final int title=0x7f09000f;
     }
     public static final class layout {
         public static final int device_entry=0x7f030000;

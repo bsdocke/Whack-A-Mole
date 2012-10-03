@@ -6,6 +6,9 @@
 
     <TextView
         android:id="@+id/playerNumber"
+        android:textSize="32sp"
+        android:textColor="#00cc00"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -14,56 +17,39 @@
     
     <TextView
         android:id="@+id/scoreField"
+        android:textSize="32sp"
+        android:textColor="#00cc00"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignRight="true"
+        android:gravity="right"
         android:layout_toRightOf="@id/playerNumber"
-        android:layout_marginLeft="50dp"
-        android:text=" scored" />
+        android:layout_marginLeft="100dp"
+        android:text="0" />
     
     <TextView
         android:id="@+id/levelField"
+        android:textSize="32sp"
+        android:textColor="#00cc00"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/scoreField"/>
+        android:layout_below="@id/scoreField"
+        android:text="Level 1"/>
 
-    <TextView
-        android:id="@+id/latitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/levelField"
-        android:text="Target Latitude:" />
-
-    <TextView
-        android:id="@+id/longitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/latitude"
-        android:text="Target Longitude:" />
-    
-    <TextView
-        android:id="@+id/currLong"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/longitude"
-        android:text="Current Longitude:" />
-    
-    <TextView
-        android:id="@+id/currLat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/currLong"
-        android:text="Current Latitude:" />
     
     <TextView
         android:id="@+id/myCode"
+        android:layout_centerHorizontal="true"
+        android:textSize="32sp"
+        android:textColor="#00cc00"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/currLat"/>
+        android:layout_below="@id/levelField"/>
     
     <EditText
         android:id="@+id/codeField"
@@ -77,7 +63,7 @@
         android:id="@+id/submitBttn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/codeField"
         android:onClick="codeSubmit"
         android:text="Enter" />

@@ -32,12 +32,13 @@ import com.components.GlobalState;
 
 import fitnessapps.acceltest.activity.IAccelRemoteService;
 
-public class GameActivity extends Activity implements
-SensorEventListener{
+public class GameActivity extends Activity implements SensorEventListener {
 
 	private static final int MOLE_INTERVAL = 30000;
 	private static final int MIN_GPS_TIME_INTERVAL = 500;
 	private static final int MIN_GPS_DISTANCE_INTERVAL = 0;
+	private static final int WHACK_THRESHOLD = 60;
+	private static final double RANGE_THRESHOLD = 0.00005;
 
 	private LocationManager manager;
 
@@ -59,7 +60,7 @@ SensorEventListener{
 	private SensorManager sensorManager;
 	private Sensor sensorAccelerometer;
 	public GameActivity parent;
-	
+
 	private String code = "";
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -70,13 +71,25 @@ SensorEventListener{
 
 	public void onStart() {
 		super.onStart();
-		
-		EditText codeField = (EditText)findViewById(R.id.codeField);
-		codeField.setVisibility(View.INVISIBLE);
-		
-		TextView code = (TextView)findViewById(R.id.myCode);
-		code.setVisibility(View.INVISIBLE);
-		
+
+		hideCodeFields();
+		setHillHandling();
+		setupSensors();
+		setNewCode();
+		initLeader();
+	}
+	
+	private void hideCodeFields(){
+		hideCodeInput();
+		hideMyCode();
+	}
+	
+	private void setHillHandling(){
+		setHillAdvancementAmount();
+		setCurrentHill();
+	}
+	
+	private void setHillAdvancementAmount(){
 		int numHills = GlobalState.hills.size();
 		Calendar c = Calendar.getInstance();
 		hillAdvancementAmount = c.get(Calendar.DAY_OF_MONTH);
@@ -85,103 +98,80 @@ SensorEventListener{
 				&& hillAdvancementAmount % numHills == 0) {
 			hillAdvancementAmount++;
 		}
-
+	}
+	
+	private void setCurrentHill(){
+		int numHills = GlobalState.hills.size();
 		hillIndex += getHillIndex();
 		hillIndex = hillIndex % numHills;
 		GlobalState.currentHill = GlobalState.hills.get(hillIndex);
-
+	}
+	
+	private void setupSensors(){
 		sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-		sensorAccelerometer = (Sensor)sensorManager
+		sensorAccelerometer = (Sensor) sensorManager
 				.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		sensorManager.registerListener(this, sensorAccelerometer,
 				SensorManager.SENSOR_DELAY_GAME);
-		
-		int firstCodePortion = level*7-2;
-		if(firstCodePortion < 100){
-			this.code = "0";
-		}
-		if(firstCodePortion < 10){
-			this.code += "0";
-		}
-		this.code += firstCodePortion;
-		
-		int secondCodePortion = c.get(Calendar.MONTH)*level;
-		if(secondCodePortion < 100){
-			this.code += "0";
-		}
-		if(secondCodePortion < 10){
-			this.code += "0";
-		}
-		this.code += secondCodePortion;
-		
-		int thirdCodePortion = c.get(Calendar.DAY_OF_MONTH)*level;
-		if(thirdCodePortion < 100){
-			this.code += "0";
-		}
-		if(thirdCodePortion < 10){
-			this.code += "0";
-		}
-		this.code += thirdCodePortion;
-		
-		
-		if(level < 100){
-			this.code += "0";
-		}
-		if(level < 10){
-			this.code += "0";
-		}
-		this.code += level;
-		this.code = this.code.substring(0,GlobalState.numPlayers);
-		
-		initLeader();
+	}
 
+	private void advanceLevel() {
+		level++;
+		setNewRequiredScore();
+		setNewCode();
+		setLevelText();
 	}
 	
-	private void advanceLevel(){
-		level++;
+	private void setNewRequiredScore(){
+		requiredScore += level * 50;
+	}
+	
+	private void setNewCode(){
 		code = "";
-		requiredScore+= level*50;
 		
-		TextView levelText = (TextView)findViewById(R.id.levelField);
-		levelText.setText("Level " + level);
+		code += getFirstCodePortion();
+		code += getSecondCodePortion();
+		code += getThirdCodePortion();
+		code += getPadding(level);
+		
+		code = this.code.substring(0, GlobalState.numPlayers);
+	}
+
+	private String getFirstCodePortion() {
+		int codeValue = level * 7 - 2;
+		String codeFragment = getPadding(codeValue);
+
+		return codeFragment;
+	}
+	
+	private String getSecondCodePortion(){
 		Calendar c = Calendar.getInstance();
-		
-		int firstCodePortion = level*7-2;
-		if(firstCodePortion < 100){
-			this.code = "0";
+		int codeValue = c.get(Calendar.MONTH) * level;
+		String codeFragment = getPadding(codeValue);
+		return codeFragment;
+	}
+	
+	private String getThirdCodePortion(){
+		Calendar c = Calendar.getInstance();
+		int codeValue = c.get(Calendar.DAY_OF_MONTH) * level;
+		String codeFragment = getPadding(codeValue);
+		return codeFragment;
+	}
+	
+	private String getPadding(int codeValue){
+		String codeFragment = "";
+		if (codeValue < 100) {
+			codeFragment += "0";
 		}
-		if(firstCodePortion < 10){
-			this.code += "0";
+		if (codeValue < 10) {
+			codeFragment += "0";
 		}
-		this.code += firstCodePortion;
-		
-		int secondCodePortion = c.get(Calendar.MONTH)*level;
-		if(secondCodePortion < 100){
-			this.code += "0";
-		}
-		if(secondCodePortion < 10){
-			this.code += "0";
-		}
-		this.code += secondCodePortion;
-		
-		int thirdCodePortion = c.get(Calendar.DAY_OF_MONTH)*level;
-		if(thirdCodePortion < 100){
-			this.code += "0";
-		}
-		if(thirdCodePortion < 10){
-			this.code += "0";
-		}
-		this.code += thirdCodePortion;
-		
-		
-		if(level < 100){
-			this.code += "0";
-		}
-		if(level < 10){
-			this.code += "0";
-		}
-		this.code += level;
-		this.code = this.code.substring(0,GlobalState.numPlayers);
+		return codeFragment + codeValue;
+	}
+	
+	private void setLevelText(){
+		TextView levelText = (TextView) findViewById(R.id.levelField);
+		levelText.setText("Level " + level);
 	}
 
 	public int getHillIndex() {
@@ -234,45 +224,83 @@ SensorEventListener{
 
 	}
 
-	private TextView getLatitudeView() {
-		return (TextView) findViewById(R.id.latitude);
+	private TextView getScoreField() {
+		TextView scoreView = (TextView) findViewById(R.id.scoreField);
+		return scoreView;
 	}
 
-	private TextView getLongitudeView() {
-		return (TextView) findViewById(R.id.longitude);
+	private void setScoreField(int newScore) {
+		TextView scoreView = getScoreField();
+		scoreView.setText(Integer.toString(newScore));
 	}
 
-	private void setLatitudeText() {
-		if (GlobalState.currentHill != null) {
-			TextView latView = getLatitudeView();
-			latView.setText("Current Latitude: "
-					+ Double.toString(GlobalState.currentHill.getLatitude()));
-		}
+	private boolean hasRequiredScore() {
+		return score >= requiredScore;
 	}
 
-	private void setLongitudeText() {
-		if (GlobalState.currentHill != null) {
-			TextView longView = getLongitudeView();
-			longView.setText("Current Longitude: "
-					+ Double.toString(GlobalState.currentHill.getLongitude()));
-		}
+	private boolean isWhack(SensorEvent event) {
+		return (event.values[0] > WHACK_THRESHOLD
+				|| event.values[1] > WHACK_THRESHOLD || event.values[2] > WHACK_THRESHOLD);
 	}
 
-	private void setCurrLatitudeText(String val) {
-		
-		TextView latView = (TextView) findViewById(R.id.currLat);
-		latView.setText("Current Latitude: " + val);
+	private void vibratePulse() {
+		Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+		vib.vibrate(100);
 	}
 
-	private void setCurrLongitudeText(String val) {
+	private void showFinishedText() {
+		TextView indicator = getScoreField();
+		indicator.setText("Help your friends finish the level!");
+	}
 
-		TextView longView = (TextView) findViewById(R.id.currLong);
-		longView.setText("Current Longitude: " + val);
+	private void showCodeInput() {
+		EditText codeField = getCodeInput();
+		codeField.setVisibility(View.VISIBLE);
+	}
+
+	private void showMyCode() {
+		TextView code = (TextView) findViewById(R.id.myCode);
+		code.setVisibility(View.VISIBLE);
+		code.setText(getMyCodeSegment());
 	}
 	
-	public void codeSubmit(View view){
-		EditText codeField = (EditText)findViewById(R.id.codeField);
-		if(code.equals(codeField.getText().toString()) && score >= requiredScore){
+	private void hideCodeInput(){
+		EditText codeField = (EditText) findViewById(R.id.codeField);
+		codeField.setVisibility(View.INVISIBLE);
+	}
+	
+	private void hideMyCode(){
+		TextView code = (TextView) findViewById(R.id.myCode);
+		code.setVisibility(View.INVISIBLE);
+	}
+
+	private String getMyCodeSegment() {
+		return parent.code.substring(GlobalState.playerNum - 1,
+				GlobalState.playerNum);
+	}
+
+	private boolean isMatchingCode() {
+		EditText codeField = getCodeInput();
+		return code.equals(codeField.getText().toString());
+	}
+
+	private boolean canAdvanceToNextLevel() {
+		return isMatchingCode() && hasRequiredScore();
+	}
+
+	private EditText getCodeInput() {
+		return (EditText) findViewById(R.id.codeField);
+	}
+
+	private boolean isOnHill(Location loc) {
+		return Math.abs(loc.getLatitude()
+				- GlobalState.currentHill.getLatitude()) < RANGE_THRESHOLD
+				&& Math.abs(loc.getLongitude()
+						- GlobalState.currentHill.getLongitude()) < RANGE_THRESHOLD;
+	}
+
+	public void codeSubmit(View view) {
+		if (canAdvanceToNextLevel()) {
 			advanceLevel();
 		}
 	}
@@ -331,33 +359,21 @@ SensorEventListener{
 
 		public void onLocationChanged(Location loc) {
 
-			if (score >= requiredScore) {
-				TextView indicator = (TextView) findViewById(R.id.scoreField);
-				indicator.setText("Help your friends finish the level!");
-				
-				TextView code = (TextView)findViewById(R.id.myCode);
-				code.setVisibility(View.VISIBLE);
-				code.setText(parent.code.substring(GlobalState.playerNum - 1, GlobalState.playerNum));
-				EditText codeField = (EditText)findViewById(R.id.codeField);
-				codeField.setVisibility(View.VISIBLE);
+			if (hasRequiredScore()) {
+				showFinishedText();
+				showMyCode();
+				showCodeInput();
+			}else{
+				hideCodeInput();
+				hideMyCode();
 			}
 
-			if (Math.abs(loc.getLatitude()
-					- GlobalState.currentHill.getLatitude()) < 0.00005
-					&& Math.abs(loc.getLongitude()
-							- GlobalState.currentHill.getLongitude()) < 0.00005) {
-				Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-				vib.vibrate(100);
-				onTarget  = true;
-			}
-			else{
+			if (isOnHill(loc)) {
+				vibratePulse();
+				onTarget = true;
+			} else {
 				onTarget = false;
 			}
-
-			setLatitudeText();
-			setLongitudeText();
-			setCurrLatitudeText(Double.toString(loc.getLatitude()));
-			setCurrLongitudeText(Double.toString(loc.getLongitude()));
 		}
 
 		public void onProviderDisabled(String arg0) {
@@ -389,23 +405,20 @@ SensorEventListener{
 
 	public void onAccuracyChanged(Sensor arg0, int arg1) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void onSensorChanged(SensorEvent event) {
-		if(event.values[0] > 60 || event.values[1] > 60 || event.values[2] > 60){
-			if(score < requiredScore && onTarget){
+		if (isWhack(event)) {
+			if (!hasRequiredScore() && onTarget) {
 				score += 20;
-				TextView scoreView = (TextView) findViewById(R.id.scoreField);
-				scoreView.setText(Integer.toString(score));
-			}
-			else if(score > requiredScore){
+				setScoreField(score);
+			} else if (hasRequiredScore()) {
 				score = requiredScore;
-				TextView scoreView = (TextView) findViewById(R.id.scoreField);
-				scoreView.setText(Integer.toString(score));
+				setScoreField(score);
 			}
 		}
-		
+
 	}
 
 }
