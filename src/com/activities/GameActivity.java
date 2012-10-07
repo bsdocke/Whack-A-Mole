@@ -122,6 +122,7 @@ public class GameActivity extends Activity implements SensorEventListener {
 	private void advanceLevel() {
 		releaseService();
 		level++;
+		GlobalState.level++;
 		setNewRequiredScore();
 		setNewCode();
 		setLevelText();
@@ -351,8 +352,8 @@ public class GameActivity extends Activity implements SensorEventListener {
 		   remoteService = IAccelRemoteService.Stub
 		     .asInterface((IBinder) boundService);
 		   try {
-		    remoteService.setGameNameFromService(GAME_NAME + " Level: "
-		      + getLevelNumber());
+		    remoteService.setGameNameFromService("Whack-A-Mole " + " Level: "
+		      + GlobalState.level);
 		   } catch (RemoteException e) {
 		    // TODO Auto-generated catch block
 		    e.printStackTrace();
