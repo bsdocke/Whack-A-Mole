@@ -72,6 +72,10 @@ public class GameActivity extends Activity implements SensorEventListener {
 	public void onStart() {
 		super.onStart();
 
+		if(isAccelServiceRunning()){
+			bindService();
+		}
+		
 		hideCodeFields();
 		setHillHandling();
 		setupSensors();
@@ -116,10 +120,15 @@ public class GameActivity extends Activity implements SensorEventListener {
 	}
 
 	private void advanceLevel() {
+		releaseService();
 		level++;
 		setNewRequiredScore();
 		setNewCode();
 		setLevelText();
+		
+		if(isAccelServiceRunning()){
+			bindService();
+		}
 	}
 	
 	private void setNewRequiredScore(){
@@ -307,52 +316,69 @@ public class GameActivity extends Activity implements SensorEventListener {
 
 	/******************** Remote Service ***************************/
 	private void bindService() {
-		if (conn == null) {
-			conn = new RemoteServiceConnection();
-			Intent i = new Intent();
-			i.setClassName("fitnessapps.acceltest.activity",
-					"fitnessapps.acceltest.activity.AccelerometerService");
-			bindService(i, conn, Context.BIND_AUTO_CREATE);
-		}
-	}
+		  if (conn == null) {
+		   conn = new RemoteServiceConnection();
+		   Intent i = new Intent();
+		   i.setClassName("fitnessapps.acceltest.activity",
+		     "fitnessapps.acceltest.activity.AccelerometerService");
+		   bindService(i, conn, Context.BIND_AUTO_CREATE);
+		  }
+		 }
 
-	private void releaseService() {
-		if (conn != null) {
-			unbindService(conn);
-			conn = null;
-		}
-	}
+		 private void releaseService() {
+		  if (conn != null) {
+		   conn.serviceAppendEndGame();
+		   unbindService(conn);
+		   conn = null;
+		  }
+		 }
 
-	private boolean isAccelServiceRunning() {
-		ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-		for (RunningServiceInfo service : manager
-				.getRunningServices(Integer.MAX_VALUE)) {
-			if ("fitnessapps.acceltest.activity.AccelerometerService"
-					.equals(service.service.getClassName())) {
-				return true;
-			}
-		}
-		return false;
-	}
+		 private boolean isAccelServiceRunning() {
+		  ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+		  for (RunningServiceInfo service : manager
+		    .getRunningServices(Integer.MAX_VALUE)) {
+		   if ("fitnessapps.acceltest.activity.AccelerometerService"
+		     .equals(service.service.getClassName())) {
+		    return true;
+		   }
+		  }
+		  return false;
+		 }
 
-	class RemoteServiceConnection implements ServiceConnection {
-		public void onServiceConnected(ComponentName className,
-				IBinder boundService) {
-			remoteService = IAccelRemoteService.Stub
-					.asInterface((IBinder) boundService);
-			try {
-				remoteService.setGameNameFromService("Whack-A-Mole");
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
-			Log.d(getClass().getSimpleName(), "onServiceConnected()");
-		}
+		 class RemoteServiceConnection implements ServiceConnection {
+		  public void onServiceConnected(ComponentName className,
+		    IBinder boundService) {
+		   remoteService = IAccelRemoteService.Stub
+		     .asInterface((IBinder) boundService);
+		   try {
+		    remoteService.setGameNameFromService(GAME_NAME + " Level: "
+		      + getLevelNumber());
+		   } catch (RemoteException e) {
+		    // TODO Auto-generated catch block
+		    e.printStackTrace();
+		   }
+		   Log.d(getClass().getSimpleName(), "onServiceConnected()");
+		  }
 
-		public void onServiceDisconnected(ComponentName className) {
-			remoteService = null;
-			Log.d(getClass().getSimpleName(), "onServiceDisconnected");
-		}
-	};
+		  public void onServiceDisconnected(ComponentName className) {
+
+		   remoteService = null;
+		   Log.d(getClass().getSimpleName(), "onServiceDisconnected");
+		  }
+
+		  public void serviceAppendEndGame() {
+		   try {
+		    remoteService.setEndGameFlagFromService(true);
+		    remoteService.setGameNameFromService("Whack-A-Mole " + "Level: "
+		      + GlobalState.level);
+		   } catch (RemoteException e) {
+		    // TODO Auto-generated catch block
+		    e.printStackTrace();
+		   }
+		  }
+		 };
+
+
 
 	/***************** End Remote Service ******************************/
 	private class MyLocationListener implements LocationListener {
